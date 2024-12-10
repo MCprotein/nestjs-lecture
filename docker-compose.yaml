@@ -1,0 +1,17 @@
+services:
+  my_mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: jjangu
+        MONGO_INITDB_ROOT_PASSWORD: wow
+    ports:
+      - "27017:27017"
+  your_mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: jjangu
+        MONGO_INITDB_ROOT_PASSWORD: wow
+    ports:
+      - "27018:27017"
