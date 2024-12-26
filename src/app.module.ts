@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ProductModule } from './product/product.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { connection1, connection2 } from './database/database.module';
+import { CacheModule } from './cache/cache.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { connection1, connection2 } from './database/database.module';
       pass: 'wow',
       authSource: 'admin',
     }),
+    CacheModule,
     ProductModule,
   ],
   controllers: [],

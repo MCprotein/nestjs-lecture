@@ -3,14 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Product, Product2 } from './product.schema';
 import { Model } from 'mongoose';
 import { connection1, connection2 } from '../database/database.module';
+import { IProductRepository } from './product.repository.interface';
 
 @Injectable()
-export class ProductRepository {
+export class ProductRepository implements IProductRepository {
   constructor(
     @InjectModel(Product.name, connection1)
     private readonly productModel: Model<Product>,
-    @InjectModel(Product2.name, connection2)
-    private readonly product2Model: Model<Product2>,
+    // @InjectModel(Product2.name, connection2)
+    // private readonly product2Model: Model<Product2>,
   ) {}
 
   async findProduct(id: string) {
@@ -33,23 +34,23 @@ export class ProductRepository {
     return this.productModel.findByIdAndDelete(id);
   }
 
-  async findProduct2(id: string) {
-    return this.product2Model
-      .find()
-      .where(id ? { _id: id } : {})
-      .lean()
-      .exec();
-  }
-
-  async createProduct2(product: Product2) {
-    return this.product2Model.create(product);
-  }
-
-  async updateProduct2(id: string, product: Product2) {
-    return this.product2Model.findByIdAndUpdate(id, product, { new: true });
-  }
-
-  async deleteProduct2(id: string) {
-    return this.product2Model.findByIdAndDelete(id);
-  }
+  // async findProduct2(id: string) {
+  //   return this.product2Model
+  //     .find()
+  //     .where(id ? { _id: id } : {})
+  //     .lean()
+  //     .exec();
+  // }
+  //
+  // async createProduct2(product: Product2) {
+  //   return this.product2Model.create(product);
+  // }
+  //
+  // async updateProduct2(id: string, product: Product2) {
+  //   return this.product2Model.findByIdAndUpdate(id, product, { new: true });
+  // }
+  //
+  // async deleteProduct2(id: string) {
+  //   return this.product2Model.findByIdAndDelete(id);
+  // }
 }

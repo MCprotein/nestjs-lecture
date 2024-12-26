@@ -10,6 +10,8 @@ import { connection1, connection2 } from '../database/database.module';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
+import { CacheModule } from '../cache/cache.module';
+import { ProductCacheRepository } from './product.cache.repository';
 
 @Module({
   imports: [
@@ -31,8 +33,9 @@ import { ProductRepository } from './product.repository';
       ],
       connection2,
     ),
+    CacheModule,
   ],
   controllers: [ProductController],
-  providers: [ProductService, ProductRepository],
+  providers: [ProductService, ProductRepository, ProductCacheRepository],
 })
 export class ProductModule {}
