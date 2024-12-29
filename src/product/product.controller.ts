@@ -1,9 +1,16 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
+import { Processor, WorkerHost } from '@nestjs/bullmq';
+import { PRODUCT_QUEUE } from '../mq/mq.queue';
+import { MqService, ProductJob } from '../mq/mq.service';
+import { Job } from 'bullmq';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly mqService: MqService,
+  ) {}
 
   @Get('text')
   test() {
@@ -39,5 +46,25 @@ export class ProductController {
   @Get('delete/:id')
   async deleteProduct(@Param('id') id: string) {
     return this.productService.deleteProduct(id);
+  }
+
+  @Get('pub/:mode')
+  async pub(@Param('mode') mode: ProductJob) {
+    await this.mqService.publishToProduct(mode, {
+      name: 'product',
+      quantity: +new Date(),
+    });
+    return 'published';
+  }
+}
+
+@Processor(PRODUCT_QUEUE)
+export class ProductConsumer extends WorkerHost {
+  constructor() {
+    super();
+  }
+
+  async process(job: Job): Promise<any | void> {
+    console.log(job.name, job.data);
   }
 }
