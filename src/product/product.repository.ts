@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Product, Product2 } from './product.schema';
+import { Product } from './product.schema';
 import { Model } from 'mongoose';
-import { connection1, connection2 } from '../database/database.module';
+import { connection1 } from '../database/database.module';
 import { IProductRepository } from './product.repository.interface';
 
 @Injectable()
@@ -13,6 +13,10 @@ export class ProductRepository implements IProductRepository {
     // @InjectModel(Product2.name, connection2)
     // private readonly product2Model: Model<Product2>,
   ) {}
+
+  findMany() {
+    return this.productModel.find().lean();
+  }
 
   async findProduct(id: string) {
     return this.productModel

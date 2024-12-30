@@ -25,3 +25,16 @@ services:
     ports:
       - "6379:6379"
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  my_postgresql:
+    container_name: my_postgresql
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: 'wow'
+      POSTGRES_PASSWORD: 'wow'
+      POSTGRES_DB: 'example'
+    ports:
+      - '5433:5432'
+    volumes:
+      - ./postgresql:/var/lib/postgresql

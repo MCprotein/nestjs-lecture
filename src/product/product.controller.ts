@@ -5,6 +5,17 @@ import { PRODUCT_QUEUE } from '../mq/mq.queue';
 import { MqService, ProductJob } from '../mq/mq.service';
 import { Job } from 'bullmq';
 
+function getMemoryUsageInMB() {
+  const memoryUsage = process.memoryUsage();
+  const memoryUsageInMB = {};
+
+  for (const key in memoryUsage) {
+    memoryUsageInMB[key] = (memoryUsage[key] / (1024 * 1024)).toFixed(2); // MB로 변환 후 소수점 2자리
+  }
+
+  return memoryUsageInMB;
+}
+
 @Controller('product')
 export class ProductController {
   constructor(
@@ -12,9 +23,27 @@ export class ProductController {
     private readonly mqService: MqService,
   ) {}
 
-  @Get('text')
-  test() {
-    return 'test';
+  @Get('many/stream')
+  async test() {
+    console.time('findManyStream');
+    const stream = await this.productService.findManyStream();
+    const result = await stream.toArray();
+    // await stream.close();
+    console.timeEnd('findManyStream');
+    console.log(result.length);
+    console.log(getMemoryUsageInMB());
+
+    return 'ok';
+  }
+
+  @Get('many')
+  async test3() {
+    console.time('findMany');
+    const result = await this.productService.findMany();
+    console.timeEnd('findMany');
+    console.log(result.length);
+    console.log(getMemoryUsageInMB());
+    return 'ok';
   }
 
   @Get('json')

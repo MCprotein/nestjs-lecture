@@ -8,6 +8,10 @@ export class ProductCacheRepository implements IProductRepository {
 
   constructor(private readonly cacheService: CacheService) {}
 
+  findMany() {
+    throw new Error('Method not implemented.');
+  }
+
   async createProduct(product: any) {
     product.id = product.id || String(+new Date());
     await this.cacheService.set(product.id, product);

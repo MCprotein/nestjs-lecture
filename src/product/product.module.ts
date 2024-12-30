@@ -6,13 +6,18 @@ import {
   Product2Schema,
   ProductSchema,
 } from './product.schema';
-import { connection1, connection2 } from '../database/database.module';
+import {
+  connection1,
+  connection2,
+  DatabaseModule,
+} from '../database/database.module';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
 import { CacheModule } from '../cache/cache.module';
 import { ProductCacheRepository } from './product.cache.repository';
 import { MqModule } from '../mq/mq.module';
+import { ProductPostgresqlRepository } from './product.postgresql.repository';
 
 @Module({
   imports: [
@@ -36,8 +41,14 @@ import { MqModule } from '../mq/mq.module';
     ),
     MqModule,
     CacheModule,
+    DatabaseModule,
   ],
   controllers: [ProductController],
-  providers: [ProductService, ProductRepository, ProductCacheRepository],
+  providers: [
+    ProductService,
+    ProductRepository,
+    ProductCacheRepository,
+    ProductPostgresqlRepository,
+  ],
 })
 export class ProductModule {}
