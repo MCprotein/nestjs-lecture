@@ -1,18 +1,22 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, StreamableFile } from '@nestjs/common';
 import { ProductService } from './product.service';
+import { MqService, ProductJob } from '../mq/mq.service';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly mqService: MqService,
+  ) {}
 
-  @Get('text')
-  test() {
-    return 'test';
-  }
-
-  @Get('json')
-  test2() {
-    return { test: 'test' };
+  @Get('mq/:mode')
+  async mqProduct(@Param('mode') mode: ProductJob) {
+    StreamableFile;
+    await this.mqService.publishToProduct(mode, {
+      name: `product${new Date().toISOString()}`,
+      quantity: +new Date(),
+      category: 'clothes',
+    });
   }
 
   @Get('find')

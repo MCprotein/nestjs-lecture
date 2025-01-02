@@ -12,6 +12,7 @@ import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
 import { CacheModule } from '../cache/cache.module';
 import { ProductCacheRepository } from './product.cache.repository';
+import { MqModule } from '../mq/mq.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ProductCacheRepository } from './product.cache.repository';
       ],
       connection2,
     ),
+    MqModule,
     CacheModule,
   ],
   controllers: [ProductController],

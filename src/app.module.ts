@@ -3,6 +3,8 @@ import { ProductModule } from './product/product.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { connection1, connection2 } from './database/database.module';
 import { CacheModule } from './cache/cache.module';
+import { BullModule } from '@nestjs/bullmq';
+import { MqModule } from './mq/mq.module';
 
 @Module({
   imports: [
@@ -19,6 +21,13 @@ import { CacheModule } from './cache/cache.module';
       pass: 'wow',
       authSource: 'admin',
     }),
+    BullModule.forRoot({
+      connection: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
+    MqModule,
     CacheModule,
     ProductModule,
   ],
